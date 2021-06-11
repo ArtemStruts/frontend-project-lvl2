@@ -6,8 +6,8 @@ export default (obj1, obj2) => {
   const keys = _.uniq(keys1.concat(keys2)).sort();
   if (keys.length === 0) {
     return '{}';
-  } 
-    const result = keys.reduce((acc, key) => {
+  }
+  const result = keys.reduce((acc, key) => {
     if (_.has(obj1, key) && !_.has(obj2, key)) {
       acc.push(`  - ${key}: ${obj1[key]}`);
       return acc;
