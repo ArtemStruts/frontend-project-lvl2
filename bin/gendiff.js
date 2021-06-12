@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 import { program } from 'commander';
-import { readFileSync } from 'fs';
 // import path from 'path';
 import genDiff from '../src/genDiff.js';
+import parsers from '../src/parsers.js';
 
 program
   .version('1.0.0')
@@ -17,11 +17,7 @@ program
 
 program
   .action((filepath1, filepath2) => {
-    const jsonData1 = readFileSync(filepath1);
-    const jsonData2 = readFileSync(filepath2);
-    const jsonParse1 = JSON.parse(jsonData1);
-    const jsonParse2 = JSON.parse(jsonData2);
-    const result = genDiff(jsonParse1, jsonParse2);
+    const result = genDiff(parsers(filepath1), parsers(filepath2));
     console.log(result);
   });
 

@@ -24,5 +24,6 @@ export default (obj1, obj2) => {
     } return acc;
   }, ['{']);
   result.push('}');
+  result.push('');
   return result.join('\n');
 };
