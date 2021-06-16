@@ -1,29 +1,49 @@
 import _ from 'lodash';
+// import format from './formatters/stylish.js';
 
-export default (obj1, obj2) => {
+const genDiff = (obj1, obj2) => {
   const keys1 = _.keys(obj1);
   const keys2 = _.keys(obj2);
   const keys = _.uniq(keys1.concat(keys2)).sort();
-  if (keys.length === 0) {
-    return '{}';
-  }
   const result = keys.reduce((acc, key) => {
-    if (_.has(obj1, key) && !_.has(obj2, key)) {
-      acc.push(`  - ${key}: ${obj1[key]}`);
+    if (_.isObject(obj1[key]) && _.isObject(obj2[key])) {
+      acc.push({
+        name: key,
+        type: 'nested',
+        children: genDiff(obj1[key], obj2[key]),
+      });
       return acc;
-    } if (!_.has(obj1, key) && _.has(obj2, key)) {
-      acc.push(`  + ${key}: ${obj2[key]}`);
-      return acc;
+    }
+    if (!_.has(obj2, key)) {
+      acc.push({
+        name: key,
+        type: 'removed',
+        value: obj1[key],
+      });
+    } if (!_.has(obj1, key)) {
+      acc.push({
+        name: key,
+        type: 'added',
+        value: obj2[key],
+      });
     } if (_.has(obj1, key) && _.has(obj2, key)) {
       if (obj1[key] === obj2[key]) {
-        acc.push(`    ${key}: ${obj1[key]}`);
-        return acc;
+        acc.push({
+          name: key,
+          type: 'unchanged',
+          value: obj2[key],
+        });
+      } else {
+        acc.push({
+          name: key,
+          type: 'changed',
+          value1: obj1[key],
+          value2: obj2[key],
+        });
       }
-      acc.push(`  - ${key}: ${obj1[key]}`);
-      acc.push(`  + ${key}: ${obj2[key]}`);
     } return acc;
-  }, ['{']);
-  result.push('}');
-  result.push('');
-  return result.join('\n');
+  }, []);
+  return result;
 };
+
+export default genDiff;
