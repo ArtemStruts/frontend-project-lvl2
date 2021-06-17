@@ -1,5 +1,4 @@
 import _ from 'lodash';
-// import format from './formatters/stylish.js';
 
 const genDiff = (obj1, obj2) => {
   const keys1 = _.keys(obj1);

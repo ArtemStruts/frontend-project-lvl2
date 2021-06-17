@@ -21,7 +21,7 @@ const stringify = (currentValue, depth) => {
   return ['{', ...lines, `${bracketIndent(depth + 4)}}`].join('\n');
 };
 
-const format = (diffTree) => {
+const stylish = (diffTree) => {
   const innerFormat = (innerDiffTree, depth) => {
     if (!_.isObject(innerDiffTree)) {
       return `${innerDiffTree}`;
@@ -52,4 +52,4 @@ const format = (diffTree) => {
   return result;
 };
 
-export default format;
+export default stylish;

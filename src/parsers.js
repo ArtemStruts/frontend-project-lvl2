@@ -5,12 +5,11 @@ import path from 'path';
 const parsers = (filepath) => {
   const data = fs.readFileSync(filepath);
   const format = path.extname(filepath);
-  let parserData;
   if (format === '.json') {
-    parserData = JSON.parse(data);
+    return JSON.parse(data);
   } if (format === '.yml' || format === '.yaml') {
-    parserData = yaml.load(data);
-  } return parserData;
+    return yaml.load(data);
+  } return 'Unsupported format.';
 };
 
 export default parsers;
