@@ -11,27 +11,25 @@ const formatValue = (value) => {
 const plain = (diffTree) => {
   const innerFormat = (innerDiffTree, parentName) => {
     const strings = innerDiffTree.flatMap((node) => {
-      let res = [];
-      const name = [parentName];
-      name.push(node.name);
+      const name = parentName.concat([node.name]);
 
       if (node.type === 'added') {
         const value = formatValue(node.value);
-        res = `Property '${name.flat(Infinity).join('.')}' was added with value: ${value}`;
+        return `Property '${name.flat(Infinity).join('.')}' was added with value: ${value}`;
       }
       if (node.type === 'removed') {
-        res = `Property '${name.flat(Infinity).join('.')}' was removed`;
+        return `Property '${name.flat(Infinity).join('.')}' was removed`;
       }
       if (node.type === 'changed') {
         const value1 = formatValue(node.value1);
         const value2 = formatValue(node.value2);
-        res = `Property '${name.flat(Infinity).join('.')}' was updated. From ${value1} to ${value2}`;
+        return `Property '${name.flat(Infinity).join('.')}' was updated. From ${value1} to ${value2}`;
       }
       if (node.type === 'nested') {
-        res = innerFormat(node.children, name);
-      } return res;
+        return innerFormat(node.children, name);
+      } return false;
     });
-    return [...strings].join('\n');
+    return [...strings].filter(Boolean).join('\n');
   };
   return [innerFormat(diffTree, [])].join('\n');
 };

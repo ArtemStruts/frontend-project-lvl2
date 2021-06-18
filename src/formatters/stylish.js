@@ -27,24 +27,21 @@ const stylish = (diffTree) => {
       return `${innerDiffTree}`;
     }
     const strings = innerDiffTree.map((node) => {
-      let res = '';
       if (node.type === 'added') {
-        res = `${currentIndent(depth + 2)}${types[node.type]}${node.name}: ${stringify(node.value, depth)}`;
+        return `${currentIndent(depth + 2)}${types[node.type]}${node.name}: ${stringify(node.value, depth)}`;
       }
       if (node.type === 'removed') {
-        res = `${currentIndent(depth + 2)}${types[node.type]}${node.name}: ${stringify(node.value, depth)}`;
+        return `${currentIndent(depth + 2)}${types[node.type]}${node.name}: ${stringify(node.value, depth)}`;
       }
       if (node.type === 'unchanged') {
-        res = `${currentIndent(depth + 2)}${types[node.type]}${node.name}: ${stringify(node.value, depth)}`;
+        return `${currentIndent(depth + 2)}${types[node.type]}${node.name}: ${stringify(node.value, depth)}`;
       }
       if (node.type === 'changed') {
-        res = [
+        return [
           `${currentIndent(depth + 2)}${types.removed}${node.name}: ${stringify(node.value1, depth)}`,
           `${currentIndent(depth + 2)}${types.added}${node.name}: ${stringify(node.value2, depth)}`].join('\n');
       }
-      if (node.type === 'nested') {
-        res = `${currentIndent(depth + 2)}${types[node.type]}${node.name}: ${innerFormat(node.children, depth + 4)}`;
-      } return res;
+      return `${currentIndent(depth + 2)}${types[node.type]}${node.name}: ${innerFormat(node.children, depth + 4)}`;
     });
     return ['{', ...strings, `${bracketIndent(depth)}}`].join('\n');
   };
