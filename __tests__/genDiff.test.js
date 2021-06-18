@@ -2,35 +2,36 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 import { test, expect } from '@jest/globals';
-import genDiff from '../src/genDiff.js';
-import parsers from '../src/parsers.js';
-import format from '../src/formatters/index.js';
+import genDiff from '../src/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const getFixturePath = (filename) => path
   .join(__dirname, '..', '__fixtures__', filename);
 
-const expectedResultYML = fs.readFileSync(getFixturePath('resultYML.txt'), 'utf-8');
-const expectedResultYMLPlain = fs.readFileSync(getFixturePath('resultPlain.txt'), 'utf-8');
-const dataYML1 = parsers(getFixturePath('file1.yml'));
-const dataYML2 = parsers(getFixturePath('file2.yml'));
-const currentResultYML = format(genDiff(dataYML1, dataYML2), 'stylish');
-const currentResultYMLPlain = format(genDiff(dataYML1, dataYML2), 'plain');
+const expectedResult = (formatter) => fs.readFileSync(getFixturePath(`result${formatter}.txt`), 'utf-8');
 
-const expectedResultJSON = fs.readFileSync(getFixturePath('resultYML.txt'), 'utf-8');
-const expectedResultJSONPlain = fs.readFileSync(getFixturePath('resultPlain.txt'), 'utf-8');
-const dataJSON1 = parsers(getFixturePath('file1.json'));
-const dataJSON2 = parsers(getFixturePath('file2.json'));
-const currentResultJSON = format(genDiff(dataJSON1, dataJSON2), 'stylish');
-const currentResultJSONPlain = format(genDiff(dataJSON1, dataJSON2), 'plain');
+const filepathYML1 = getFixturePath('file1.yml');
+const filepathYML2 = getFixturePath('file2.yml');
+const filepathJSON1 = getFixturePath('file1.json');
+const filepathJSON2 = getFixturePath('file2.json');
+
+test('nested data default', () => {
+  expect(genDiff(filepathYML1, filepathYML2)).toEqual(expectedResult('Stylish').trim());
+  expect(genDiff(filepathJSON1, filepathJSON2)).toEqual(expectedResult('Stylish').trim());
+});
 
 test('nested data stylish', () => {
-  expect(currentResultYML).toEqual(expectedResultYML);
-  expect(currentResultJSON).toEqual(expectedResultJSON);
+  expect(genDiff(filepathYML1, filepathYML2, 'stylish')).toEqual(expectedResult('Stylish').trim());
+  expect(genDiff(filepathJSON1, filepathJSON2, 'stylish')).toEqual(expectedResult('Stylish').trim());
 });
 
 test('nested data plain', () => {
-  expect(currentResultYMLPlain).toEqual(expectedResultYMLPlain);
-  expect(currentResultJSONPlain).toEqual(expectedResultJSONPlain);
+  expect(genDiff(filepathYML1, filepathYML2, 'plain')).toEqual(expectedResult('Plain').trim());
+  expect(genDiff(filepathJSON1, filepathJSON2, 'plain')).toEqual(expectedResult('Plain').trim());
+});
+
+test('nested data json', () => {
+  expect(genDiff(filepathYML1, filepathYML2, 'json')).toEqual(expectedResult('JSON').trim());
+  expect(genDiff(filepathJSON1, filepathJSON2, 'json')).toEqual(expectedResult('JSON').trim());
 });
