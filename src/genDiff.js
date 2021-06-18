@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const genDiff = (obj1, obj2) => {
+const getDiffTree = (obj1, obj2) => {
   const keys1 = _.keys(obj1);
   const keys2 = _.keys(obj2);
   const keys = _.uniq(keys1.concat(keys2)).sort();
@@ -9,7 +9,7 @@ const genDiff = (obj1, obj2) => {
       acc.push({
         name: key,
         type: 'nested',
-        children: genDiff(obj1[key], obj2[key]),
+        children: getDiffTree(obj1[key], obj2[key]),
       });
       return acc;
     }
@@ -45,4 +45,4 @@ const genDiff = (obj1, obj2) => {
   return result;
 };
 
-export default genDiff;
+export default getDiffTree;

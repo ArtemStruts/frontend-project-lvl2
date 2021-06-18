@@ -48,8 +48,7 @@ const stylish = (diffTree) => {
     });
     return ['{', ...strings, `${bracketIndent(depth)}}`].join('\n');
   };
-  const result = [innerFormat(diffTree, 0), ''].join('\n');
-  return result;
+  return [innerFormat(diffTree, 0)].join('\n');
 };
 
 export default stylish;

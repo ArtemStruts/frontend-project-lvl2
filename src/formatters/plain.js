@@ -33,8 +33,7 @@ const plain = (diffTree) => {
     });
     return [...strings].join('\n');
   };
-  const result = [innerFormat(diffTree, []), ''].join('\n');
-  return result;
+  return [innerFormat(diffTree, [])].join('\n');
 };
 
 export default plain;
