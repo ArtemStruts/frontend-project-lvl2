@@ -30,9 +30,8 @@ const stylish = (diffTree) => {
         return `${currentIndent(depth + 2)}${types[node.type]}${node.name}: ${innerFormat(node.children, depth + 4)}`;
       }
       if (node.type === 'changed') {
-        return [
-          `${currentIndent(depth + 2)}${types.removed}${node.name}: ${stringify(node.value1, depth)}`,
-          `${currentIndent(depth + 2)}${types.added}${node.name}: ${stringify(node.value2, depth)}`].join('\n');
+        return `${currentIndent(depth + 2)}${types.removed}${node.name}: ${stringify(node.value1, depth)}
+${currentIndent(depth + 2)}${types.added}${node.name}: ${stringify(node.value2, depth)}`;
       }
       return `${currentIndent(depth + 2)}${types[node.type]}${node.name}: ${stringify(node.value, depth)}`;
     });
