@@ -9,7 +9,6 @@ const types = {
 const replacer = ' ';
 
 const currentIndent = (depth) => replacer.repeat(depth);
-const bracketIndent = (depth) => replacer.repeat(depth);
 
 const stringify = (currentValue, depth) => {
   if (!_.isObject(currentValue)) {
@@ -18,7 +17,7 @@ const stringify = (currentValue, depth) => {
   const lines = Object
     .entries(currentValue)
     .flatMap(([key, val]) => `${currentIndent(depth + 8)}${key}: ${stringify(val, depth + 4)}`);
-  return ['{', ...lines, `${bracketIndent(depth + 4)}}`].join('\n');
+  return ['{', ...lines, `${currentIndent(depth + 4)}}`].join('\n');
 };
 
 const stylish = (diffTree) => {
@@ -27,23 +26,17 @@ const stylish = (diffTree) => {
       return `${innerDiffTree}`;
     }
     const strings = innerDiffTree.map((node) => {
-      if (node.type === 'added') {
-        return `${currentIndent(depth + 2)}${types[node.type]}${node.name}: ${stringify(node.value, depth)}`;
-      }
-      if (node.type === 'removed') {
-        return `${currentIndent(depth + 2)}${types[node.type]}${node.name}: ${stringify(node.value, depth)}`;
-      }
-      if (node.type === 'unchanged') {
-        return `${currentIndent(depth + 2)}${types[node.type]}${node.name}: ${stringify(node.value, depth)}`;
+      if (node.type === 'nested') {
+        return `${currentIndent(depth + 2)}${types[node.type]}${node.name}: ${innerFormat(node.children, depth + 4)}`;
       }
       if (node.type === 'changed') {
         return [
           `${currentIndent(depth + 2)}${types.removed}${node.name}: ${stringify(node.value1, depth)}`,
           `${currentIndent(depth + 2)}${types.added}${node.name}: ${stringify(node.value2, depth)}`].join('\n');
       }
-      return `${currentIndent(depth + 2)}${types[node.type]}${node.name}: ${innerFormat(node.children, depth + 4)}`;
+      return `${currentIndent(depth + 2)}${types[node.type]}${node.name}: ${stringify(node.value, depth)}`;
     });
-    return ['{', ...strings, `${bracketIndent(depth)}}`].join('\n');
+    return ['{', ...strings, `${currentIndent(depth)}}`].join('\n');
   };
   return [innerFormat(diffTree, 0)].join('\n');
 };
