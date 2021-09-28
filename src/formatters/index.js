@@ -3,14 +3,19 @@ import plain from './plain.js';
 import json from './json.js';
 
 const format = (data, formatStyle) => {
-  if (formatStyle === 'stylish') {
-    return stylish(data);
-  } if (formatStyle === 'plain') {
-    return plain(data);
-  } if (formatStyle === 'json') {
-    return json(data);
+  switch (formatStyle) {
+    case 'stylish': {
+      return stylish(data);
+    }
+    case 'plain': {
+      return plain(data);
+    }
+    case 'json': {
+      return json(data);
+    }
+    default:
+      return 'Unexpected formatter.';
   }
-  return 'Unexpected formatter.';
 };
 
 export default format;
