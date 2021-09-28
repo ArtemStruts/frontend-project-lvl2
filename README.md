@@ -8,8 +8,12 @@
 <p>This utility compares two configuration files and shows a difference in various styles.</p>
 <div>
   <h3>Examples:</h3>
-  <b>Flat files</b>
-  <a href="https://asciinema.org/a/scQK19lwEr7cOHP3NguJOeHzY" target="_blank"><img src="https://asciinema.org/a/scQK19lwEr7cOHP3NguJOeHzY.svg" /></a>
-  <b>Nested files</b>
-  <a href="https://asciinema.org/a/N9Z2jF78Rs4Q2yfvcWaOfUtKu" target="_blank"><img src="https://asciinema.org/a/N9Z2jF78Rs4Q2yfvcWaOfUtKu.svg" /></a>
+  <div>
+    <b>Flat files</b>
+    <a href="https://asciinema.org/a/scQK19lwEr7cOHP3NguJOeHzY" target="_blank"><img src="https://asciinema.org/a/scQK19lwEr7cOHP3NguJOeHzY.svg" /></a>
+  </div>
+  <div>
+    <b>Nested files</b>
+    <a href="https://asciinema.org/a/N9Z2jF78Rs4Q2yfvcWaOfUtKu" target="_blank"><img src="https://asciinema.org/a/N9Z2jF78Rs4Q2yfvcWaOfUtKu.svg" /></a>
+  </div>
 </div>
