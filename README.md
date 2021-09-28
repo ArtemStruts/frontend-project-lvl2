@@ -9,11 +9,11 @@
 <div>
   <h3>Examples:</h3>
   <div>
-    <b>Flat files</b>
+    <p><b>Flat files</b></p>
     <a href="https://asciinema.org/a/scQK19lwEr7cOHP3NguJOeHzY" target="_blank"><img src="https://asciinema.org/a/scQK19lwEr7cOHP3NguJOeHzY.svg" /></a>
   </div>
   <div>
-    <b>Nested files</b>
+    <p><b>Nested files</b></p>
     <a href="https://asciinema.org/a/N9Z2jF78Rs4Q2yfvcWaOfUtKu" target="_blank"><img src="https://asciinema.org/a/N9Z2jF78Rs4Q2yfvcWaOfUtKu.svg" /></a>
   </div>
 </div>
