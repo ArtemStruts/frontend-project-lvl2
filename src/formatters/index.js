@@ -14,7 +14,7 @@ const format = (data, formatStyle) => {
       return json(data);
     }
     default:
-      return 'Unexpected formatter.';
+      throw new Error('Unexpected formatter.');
   }
 };
 

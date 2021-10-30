@@ -6,34 +6,42 @@ const types = {
   unchanged: '  ',
   nested: '  ',
 };
-const replacer = ' ';
+const replacer = '  ';
 
 const currentIndent = (depth) => replacer.repeat(depth);
 
 const stringify = (currentValue, depth) => {
   if (!_.isObject(currentValue)) {
-    return `${currentValue}`;
+    return currentValue;
   }
+
   const lines = Object
     .entries(currentValue)
-    .flatMap(([key, val]) => `${currentIndent(depth + 8)}${key}: ${stringify(val, depth + 4)}`);
-  return ['{', ...lines, `${currentIndent(depth + 4)}}`].join('\n');
+    .flatMap(([key, val]) => `${currentIndent(depth + 4)}${key}: ${stringify(val, depth + 2)}`);
+  return ['{', ...lines, `${currentIndent(depth + 2)}}`].join('\n');
 };
 
 const stylish = (diffTree) => {
   const innerFormat = (innerDiffTree, depth) => {
-    if (!_.isObject(innerDiffTree)) {
-      return `${innerDiffTree}`;
-    }
     const strings = innerDiffTree.map((node) => {
-      if (node.type === 'nested') {
-        return `${currentIndent(depth + 2)}${types[node.type]}${node.name}: ${innerFormat(node.children, depth + 4)}`;
+      const {
+        name,
+        type,
+        value,
+        value1,
+        value2,
+        children,
+      } = node;
+
+      switch (type) {
+        case 'nested':
+          return `${currentIndent(depth + 1)}${types[type]}${name}: ${innerFormat(children, depth + 2)}`;
+        case 'changed':
+          return `${currentIndent(depth + 1)}${types.removed}${name}: ${stringify(value1, depth)}
+${currentIndent(depth + 1)}${types.added}${name}: ${stringify(value2, depth)}`;
+        default:
+          return `${currentIndent(depth + 1)}${types[type]}${name}: ${stringify(value, depth)}`;
       }
-      if (node.type === 'changed') {
-        return `${currentIndent(depth + 2)}${types.removed}${node.name}: ${stringify(node.value1, depth)}
-${currentIndent(depth + 2)}${types.added}${node.name}: ${stringify(node.value2, depth)}`;
-      }
-      return `${currentIndent(depth + 2)}${types[node.type]}${node.name}: ${stringify(node.value, depth)}`;
     });
     return ['{', ...strings, `${currentIndent(depth)}}`].join('\n');
   };
