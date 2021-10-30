@@ -7,8 +7,8 @@ publish:
 lint:
 	npx eslint .
 test:
-	npx -n '--experimental-vm-modules' jest
+	npm test
 test-coverage:
-	npx -n '--experimental-vm-modules' jest --bail "--coverage" "--coverageProvider=v8"
+	npm test "--coverage" "--coverageProvider=v8"
 
 .PHONY: test

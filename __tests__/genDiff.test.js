@@ -35,3 +35,11 @@ test('nested data json', () => {
   expect(genDiff(filepathYML1, filepathYML2, 'json')).toEqual(expectedResult('JSON').trim());
   expect(genDiff(filepathJSON1, filepathJSON2, 'json')).toEqual(expectedResult('JSON').trim());
 });
+
+test('unexpected formatter', () => {
+  expect(() => genDiff(filepathJSON1, filepathYML2, 'error')).toThrow();
+});
+
+test('unexpected extname', () => {
+  expect(() => genDiff(filepathYML1, getFixturePath('resultStylish.txt'))).toThrow();
+});
